@@ -3,7 +3,14 @@ name: Submitty CI-1
 #run php lint, phpstan, eslint, and pylint on any push
 on:
     push:
-  
+    pull_request:
+      branches:
+        # We need to bulid on pull_requests for dealing with external contributions,
+        # but want to avoid double building on both pushes + PRs. Forked PRs use a
+        # branch name in the form of <name>:<branch> and so we aim to only run PR builds
+        # for branches that match that, which internal branches / PRs should avoid.
+      - '**:**'
+
 jobs:
     eslint:
         runs-on: ubuntu-latest
